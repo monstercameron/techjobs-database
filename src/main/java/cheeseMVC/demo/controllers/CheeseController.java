@@ -24,7 +24,7 @@ public class CheeseController {
 
     @Autowired
     private CheeseDao cheeseDao;
-    
+
     @Autowired
     private CategoryDao categoryDao;
 
@@ -77,19 +77,54 @@ public class CheeseController {
 
         return "redirect:";
     }
-    
+
     @RequestMapping(value = "category/{category}", method = RequestMethod.GET)
-    public String filterByCategory( Model model,
-                                    @PathVariable("category") String category){
-        
-        if(categoryDao.findFirstByName(category) == null){
+    public String filterByCategory(Model model,
+            @PathVariable("category") String category) {
+
+        if (categoryDao.findFirstByName(category) == null) {
             return "redirect:/cheese";
         }
-        
+
         model.addAttribute("cheeses", categoryDao.findFirstByName(category).getCheeses());
         model.addAttribute("title", "Cheeses by Category: " + category);
 
         return "cheese/index";
     }
 
+    @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
+    public String editCheese(Model model,
+            @PathVariable int cheeseId) {
+
+        Cheese cheese = cheeseDao.getById(cheeseId);
+        model.addAttribute(cheese);
+        model.addAttribute("title", "Edit Cheese");
+        model.addAttribute("categories", categoryDao.findAll());
+
+        return "cheese/edit";
+    }
+
+    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    public String editCheese(   Model model,
+                                @ModelAttribute @Valid Cheese cheese,
+                                Errors errors) {
+
+        if(errors.hasErrors()){
+            model.addAttribute(cheese);
+            model.addAttribute("title", "Edit Cheese");
+            model.addAttribute("categories", categoryDao.findAll());
+            return "cheese/edit";
+        }
+        
+        System.out.println(cheese.toString());
+        
+        //Cheese fromDb = cheeseDao.getById();
+        //fromDb.setCategory(cheese.getCategory());
+        //fromDb.setDescription(cheese.getDescription());
+        //fromDb.setName(cheese.getName());
+        //System.out.println(fromDb);
+        //cheeseDao.save(fromDb);
+
+        return "redirect:";
+    }
 }

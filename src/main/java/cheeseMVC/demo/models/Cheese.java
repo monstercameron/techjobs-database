@@ -1,8 +1,10 @@
 package cheeseMVC.demo.models;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +30,9 @@ public class Cheese {
     @ManyToOne
     @NotNull(message = "needs to create a category first")
     private Category category;
+    
+    @ManyToMany(mappedBy = "cheese")
+    private List<Menu> menus;
 
     public Cheese(String name, String description) {
         this.name = name;
@@ -63,4 +68,11 @@ public class Cheese {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        return "Cheese{" + "id=" + id + ", name=" + name + ", description=" + description + ", category=" + category + ", menus=" + menus + '}';
+    }
+    
+    
 }

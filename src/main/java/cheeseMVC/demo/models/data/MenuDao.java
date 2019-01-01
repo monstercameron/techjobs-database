@@ -19,4 +19,6 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public interface MenuDao extends CrudRepository<Menu, Integer> {
     
+    Menu getById(int ID);
+    
 }

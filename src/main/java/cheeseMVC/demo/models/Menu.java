@@ -8,6 +8,7 @@ package cheeseMVC.demo.models;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 public class Menu {
     
     @NotNull
+    @Id
     @GeneratedValue
     private int id;
     
@@ -32,7 +34,7 @@ public class Menu {
         this.name = name;
     }
 
-    public Menu() {
+    public Menu() { 
     }
     
     public int getId() {
@@ -57,6 +59,11 @@ public class Menu {
     
     public void addItem(Cheese item){
         cheese.add(item);
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" + "id=" + id + ", name=" + name + ", cheese=" + cheese + '}';
     }
     
 }
